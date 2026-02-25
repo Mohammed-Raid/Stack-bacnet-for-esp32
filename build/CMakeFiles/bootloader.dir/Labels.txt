@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/CMakeFiles/bootloader
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/CMakeFiles/bootloader.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/CMakeFiles/bootloader-complete.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

@@ -1,0 +1,6 @@
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/bootloader/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/esp_app_format/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/esp_rom/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/esptool_py/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/partition_table/Kconfig.projbuild"
+source "D:/Users/user/Downloads/Schedule_Sync_RTC/ejub_piloter_analogue_led_bacnet-main - Copie/main/Kconfig.projbuild"
