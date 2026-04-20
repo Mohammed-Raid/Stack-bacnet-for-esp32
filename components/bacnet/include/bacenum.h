@@ -409,6 +409,24 @@ typedef enum {
     PROP_POWER = 384,
     PROP_TRANSITION = 385,
     PROP_EGRESS_ACTIVE = 386,
+    /* Network Port properties - Addendum 135-2012az */
+    PROP_APDU_LENGTH = 388,
+    PROP_BACNET_IP_BBMD_ACCEPT_FD_REGISTRATIONS = 393,
+    PROP_BACNET_IP_BBMD_BROADCAST_DISTRIBUTION_TABLE = 394,
+    PROP_BACNET_IP_BBMD_FOREIGN_DEVICE_TABLE = 395,
+    PROP_IP_ADDRESS = 400,
+    PROP_IP_DEFAULT_GATEWAY = 401,
+    PROP_IP_DHCP_ENABLE = 402,
+    PROP_IP_DNS_SERVER = 406,
+    PROP_BACNET_IP_MODE = 408,
+    PROP_BACNET_IP_MULTICAST_ADDRESS = 409,
+    PROP_IP_SUBNET_MASK = 411,
+    PROP_BACNET_IP_UDP_PORT = 412,
+    PROP_CHANGES_PENDING = 416,
+    PROP_LINK_SPEED = 420,
+    PROP_MAC_ADDRESS = 423,
+    PROP_NETWORK_NUMBER = 425,
+    PROP_NETWORK_NUMBER_QUALITY = 426,
         /* The special property identifiers all, optional, and required  */
         /* are reserved for use in the ReadPropertyConditional and */
         /* ReadPropertyMultiple services or services not defined in this standard. */

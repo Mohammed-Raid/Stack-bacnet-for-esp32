@@ -113,9 +113,19 @@ idf_component_register(
 "wp.c"
 "wpm.c"
 "schedule.c"
-"dailyschedule.c"  # <--- AJOUTEZ CA
-"calendarentry.c"  # <--- AJOUTER
-    "special_event.c"  # <--- AJOUTER
+"dailyschedule.c"
+"calendarentry.c"
+"special_event.c"
+"msi.c"
+"mso.c"
+"msv.c"
+"iv.c"
+"piv.c"
+"csv.c"
+"lav.c"
+"tl.c"
+"acc.c"
+"np.c"
     INCLUDE_DIRS "include"
     REQUIRES esp_wifi driver
     REQUIRES driver
