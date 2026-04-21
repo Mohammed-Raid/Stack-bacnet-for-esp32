@@ -14,9 +14,10 @@
 #include "npdu.h"
 #include "handlers.h"
 #include "txbuf.h"
-#include "device.h"     
-#include "av.h"         
-#include "schedule.h"   
+#include "tsm.h"
+#include "device.h"
+#include "av.h"
+#include "schedule.h"
 
 #define MAX_MPDU 1476
 
@@ -31,7 +32,8 @@ void server_task(void *arg)
 {
     BACNET_ADDRESS src = { 0 };
     uint16_t pdu_len = 0;
-    
+    uint32_t seconds_elapsed = 0;
+
     time_t now;
     struct tm timeinfo;
     BACNET_DATE bdate;
@@ -46,7 +48,16 @@ void server_task(void *arg)
             npdu_handler(&src, &rx_buffer[0], pdu_len);
         }
 
-        /* 2. Gestion du Temps */
+        /* 2. BACnet timers (TSM + COV) */
+        tsm_timer_milliseconds(100);
+        handler_cov_task();
+        seconds_elapsed += 100;
+        if (seconds_elapsed >= 1000) {
+            handler_cov_timer_seconds(seconds_elapsed / 1000);
+            seconds_elapsed = 0;
+        }
+
+        /* 3. Gestion du Temps */
         /* On récupère l'heure de l'ESP32 */
         time(&now);
         localtime_r(&now, &timeinfo);
@@ -65,7 +76,7 @@ void server_task(void *arg)
         /* NOTE : On a supprimé Device_Set_Local_Date/Time ici */
         /* car le fichier device.c le fait déjà tout seul quand on l'interroge. */
 
-        /* 3. LOGIQUE DE LIAISON (SCHEDULE -> ANALOG VALUE) */
+        /* 4. LOGIQUE DE LIAISON (SCHEDULE -> ANALOG VALUE) */
         SCHEDULE_DESCR *sched_obj = Schedule_Object(0); 
         
         if (sched_obj) {

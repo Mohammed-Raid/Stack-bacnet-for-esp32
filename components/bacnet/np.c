@@ -288,3 +288,23 @@ void Network_Port_Intrinsic_Reporting(uint32_t object_instance)
 {
     (void)object_instance;
 }
+
+void Network_Port_IP_Set(
+    uint32_t object_instance,
+    const uint8_t *ip_address,
+    const uint8_t *subnet_mask,
+    const uint8_t *gateway,
+    uint16_t udp_port)
+{
+    unsigned index = Network_Port_Instance_To_Index(object_instance);
+    if (index >= MAX_NETWORK_PORTS)
+        return;
+    if (ip_address)
+        memcpy(NP_Descr[index].IP_Address, ip_address, 4);
+    if (subnet_mask)
+        memcpy(NP_Descr[index].IP_Subnet_Mask, subnet_mask, 4);
+    if (gateway)
+        memcpy(NP_Descr[index].IP_Default_Gateway, gateway, 4);
+    if (udp_port)
+        NP_Descr[index].BACnet_IP_UDP_Port = udp_port;
+}

@@ -64,6 +64,7 @@
 #include "tl.h"
 #include "acc.h"
 #include "np.h"
+#include "schedule.h"
 #include <time.h>
 #include <sys/time.h>
 #if defined(__BORLANDC__) || defined(_WIN32)
@@ -335,6 +336,17 @@ static object_functions_t My_Object_Table[] = {
             Network_Port_Property_Lists,
             NULL, NULL, NULL, NULL, NULL,
             Network_Port_Intrinsic_Reporting},
+    {OBJECT_SCHEDULE,
+            Schedule_Init,
+            Schedule_Count,
+            Schedule_Index_To_Instance,
+            Schedule_Valid_Instance,
+            Schedule_Object_Name,
+            Schedule_Read_Property,
+            Schedule_Write_Property,
+            (rpm_property_lists_function)Schedule_Property_Lists,
+            NULL, NULL, NULL, NULL, NULL,
+            NULL},
 
     {MAX_BACNET_OBJECT_TYPE,
             NULL /* Init */ ,

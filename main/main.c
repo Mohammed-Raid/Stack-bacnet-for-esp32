@@ -34,9 +34,8 @@
 #include "net.h"
 #include "txbuf.h"
 #include "version.h"
-#include "av.h"
 #include "bip.h"
-#include "schedule.h"
+#include "np.h"
 
 #define SERVER_DEVICE_ID 260127
 static const char *TAG = "MAIN";
@@ -208,15 +207,18 @@ void handler_timesynchronization(uint8_t * service_request, uint16_t service_len
     rtc_write_current_time();
 }
 
-static object_functions_t Object_Table[] = {
-   { OBJECT_DEVICE, NULL, Device_Count, Device_Index_To_Instance, Device_Valid_Object_Instance_Number, Device_Object_Name, Device_Read_Property_Local, Device_Write_Property_Local, Device_Property_Lists, NULL, NULL, NULL, NULL, NULL, NULL },
-   { OBJECT_ANALOG_VALUE, Analog_Value_Init, Analog_Value_Count, Analog_Value_Index_To_Instance, Analog_Value_Valid_Instance, Analog_Value_Object_Name, Analog_Value_Read_Property, Analog_Value_Write_Property, Analog_Value_Property_Lists, NULL, NULL, NULL, NULL, NULL, NULL },
-   { OBJECT_SCHEDULE, Schedule_Init, Schedule_Count, Schedule_Index_To_Instance, Schedule_Valid_Instance, Schedule_Object_Name, Schedule_Read_Property, Schedule_Write_Property, (rpm_property_lists_function)Schedule_Property_Lists, NULL, NULL, NULL, NULL, NULL, NULL },
-};
-
 static void Init_Service_Handlers(void)
 {
-    Device_Init(&Object_Table[0]);
+    Device_Init(NULL);
+
+    /* Set device identification visible in YABE */
+    BACNET_CHARACTER_STRING obj_name;
+    characterstring_init_ansi(&obj_name, "ESP32-BACnet-Server");
+    Device_Set_Object_Name(&obj_name);
+    Device_Set_Model_Name("EdgeBox-ESP-100", strlen("EdgeBox-ESP-100"));
+    Device_Set_Description("BACnet/IP Server on ESP32-S3", strlen("BACnet/IP Server on ESP32-S3"));
+
+    handler_cov_init();
     apdu_set_unconfirmed_handler(SERVICE_UNCONFIRMED_WHO_IS, handler_who_is);
     apdu_set_unconfirmed_handler(SERVICE_UNCONFIRMED_WHO_HAS, handler_who_has);
     apdu_set_unconfirmed_handler(SERVICE_UNCONFIRMED_I_AM, handler_i_am_bind);
@@ -225,6 +227,10 @@ static void Init_Service_Handlers(void)
     apdu_set_confirmed_handler(SERVICE_CONFIRMED_WRITE_PROPERTY, handler_write_property);
     apdu_set_confirmed_handler(SERVICE_CONFIRMED_READ_PROP_MULTIPLE, handler_read_property_multiple);
     apdu_set_confirmed_handler(SERVICE_CONFIRMED_WRITE_PROP_MULTIPLE, handler_write_property_multiple);
+    apdu_set_confirmed_handler(SERVICE_CONFIRMED_SUBSCRIBE_COV, handler_cov_subscribe);
+    apdu_set_confirmed_handler(SERVICE_CONFIRMED_READ_RANGE, handler_read_range);
+    apdu_set_confirmed_handler(SERVICE_CONFIRMED_REINITIALIZE_DEVICE, handler_reinitialize_device);
+    apdu_set_confirmed_handler(SERVICE_CONFIRMED_ACKNOWLEDGE_ALARM, handler_alarm_ack);
     apdu_set_unrecognized_service_handler_handler(handler_unrecognized_service);
 }
 
@@ -271,6 +277,25 @@ void app_main(void)
             bip_set_addr(ip_info.ip.addr);
             bip_set_broadcast_addr(ip_info.ip.addr | ~ip_info.netmask.addr);
             ESP_LOGI(TAG, "BACnet IP corrigée sur : " IPSTR, IP2STR(&ip_info.ip));
+
+            /* Populate Network Port object with actual IP configuration */
+            uint8_t np_ip[4], np_mask[4], np_gw[4];
+            uint32_t addr = ip_info.ip.addr;
+            uint32_t mask = ip_info.netmask.addr;
+            uint32_t gw   = ip_info.gw.addr;
+            np_ip[0]   = (addr >>  0) & 0xFF;
+            np_ip[1]   = (addr >>  8) & 0xFF;
+            np_ip[2]   = (addr >> 16) & 0xFF;
+            np_ip[3]   = (addr >> 24) & 0xFF;
+            np_mask[0] = (mask >>  0) & 0xFF;
+            np_mask[1] = (mask >>  8) & 0xFF;
+            np_mask[2] = (mask >> 16) & 0xFF;
+            np_mask[3] = (mask >> 24) & 0xFF;
+            np_gw[0]   = (gw >>  0) & 0xFF;
+            np_gw[1]   = (gw >>  8) & 0xFF;
+            np_gw[2]   = (gw >> 16) & 0xFF;
+            np_gw[3]   = (gw >> 24) & 0xFF;
+            Network_Port_IP_Set(0, np_ip, np_mask, np_gw, 0xBAC0);
         }
 
         Send_I_Am(&Handler_Transmit_Buffer[0]);

@@ -77,7 +77,15 @@ void bip_set_interface(char *ifname)
 
     /* setup local address */
     esp_netif_ip_info_t ip_info;
-    esp_netif_get_ip_info(esp_netif_get_handle_from_ifkey("WIFI_STA_DEF"), &ip_info);
+    esp_netif_t *netif = esp_netif_get_handle_from_ifkey("ETH_DEF");
+    if (!netif) {
+        netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+    }
+    if (!netif) {
+        ESP_LOGE(TAG, "No network interface found for BACnet/IP");
+        return;
+    }
+    esp_netif_get_ip_info(netif, &ip_info);
 
     local_address.s_addr = ip_info.ip.addr;
 

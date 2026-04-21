@@ -43,6 +43,12 @@ bool Network_Port_Object_Name(
 int Network_Port_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata);
 bool Network_Port_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data);
 void Network_Port_Intrinsic_Reporting(uint32_t object_instance);
+void Network_Port_IP_Set(
+    uint32_t object_instance,
+    const uint8_t *ip_address,
+    const uint8_t *subnet_mask,
+    const uint8_t *gateway,
+    uint16_t udp_port);
 
 #ifdef __cplusplus
 }
